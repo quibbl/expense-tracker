@@ -3,10 +3,10 @@ import { addExpense, getExpenses } from '../services/expenses.service';
 
 const router = express.Router();
 
-router.post('/expenses', (req, res) => {
+router.post('/expenses', async (req, res) => {
   const expense = req.body;
-  const result = addExpense(expense);
-  res.status(201).send({ success: true, id: result.lastInsertRowid });
+  const result = await addExpense(expense);
+  res.status(200).send({ success: true, id: result.id });
 });
 
 router.get('/expenses', (req, res) => {
