@@ -1,15 +1,27 @@
-import db from '../db/db.service';
+import { PrismaClient } from '@prisma/client';
+import { Expense } from '../entites';
+
+const prisma = new PrismaClient();
 
 
-export const insertExpense = (name: string, amount: number, currency: string, category: string, date: string) => {
-  const statement = db.prepare(`
-    INSERT INTO expenses (name, amount, currency, category, date) 
-    VALUES (?, ?, ?, ?, ?)
-  `);
-  return statement.run(name, amount, currency, category, date);
-}
+export const insertExpense = async (data: Expense) => {
+  try {
+    const newExpense = await prisma.expense.create({
+      data,
+    });
+    return newExpense;
+  } catch (error) {
+    console.error('Error inserting expense:', error);
+    throw error;
+  }
+};
 
-export const selectAllExpenses = () => {
-  const statement = db.prepare('SELECT * FROM expenses');
-  return statement.all();
-}
+export const selectAllExpenses = async () => {
+  try {
+    const expenses = await prisma.expense.findMany();
+    return expenses;
+  } catch (error) {
+    console.error('Error fetching expenses:', error);
+    throw error;
+  }
+};

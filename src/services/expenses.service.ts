@@ -1,7 +1,8 @@
 import { insertExpense, selectAllExpenses } from '../repository/expenses.repository';
+import { Expense } from '../entites';
 
-export const addExpense = (expense: { name: string; amount: number; currency: string; category: string; date: string; }) => {
-  return insertExpense(expense.name, expense.amount, expense.currency, expense.category, expense.date);
+export const addExpense = (expense: Expense) => {
+  return insertExpense(expense);
 }
 
 export const getExpenses = () => {
