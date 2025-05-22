@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Expense } from '../entites';
+import { Expense } from '../expenses/entites';
 
 const prisma = new PrismaClient();
 
