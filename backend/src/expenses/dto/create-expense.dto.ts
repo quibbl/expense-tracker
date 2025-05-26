@@ -1,7 +1,7 @@
-export interface Expense {
+export interface CreateExpenseDto {
   name: string;
   amount: number;
-  currency: string;
+  currency: number;
   category: string;
   date: string;
   createdAt: Date;

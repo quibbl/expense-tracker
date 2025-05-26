@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import { Expense } from '../expenses/entites';
+import { CreateExpenseDto } from './dto/create-expense.dto';
 
 const prisma = new PrismaClient();
 
 
-export const insertExpense = async (data: Expense) => {
+export const createExpense = async (data: CreateExpenseDto) => {
   try {
     const newExpense = await prisma.expense.create({
       data,

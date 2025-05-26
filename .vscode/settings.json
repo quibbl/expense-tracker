@@ -1,0 +1,5 @@
+{
+    "prettier.configPath": "/Users/hanna.shtyka/expense-tracker/.prettierrc",
+    "prettier.useTabs": true,
+    "editor.formatOnSave": true
+}
