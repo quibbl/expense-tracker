@@ -1,23 +1,50 @@
-import { defineConfig } from 'eslint/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import js from '@eslint/js';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
-export default defineConfig([
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+export default tseslint.config(
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    ignores: ['**/dist/**', '**/node_modules/**'],
+  },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ['backend/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: './backend/tsconfig.json',
+        tsconfigRootDir: __dirname,
+      },
+    },
+  },
+  {
+    files: ['frontend/**/*.{ts,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        project: './frontend/tsconfig.app.json',
+        tsconfigRootDir: __dirname,
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
-    extends: [
-      'plugin:@typescript-eslint/recommended',
-      'plugin:react-hooks/recommended',
-    ],
-    parserOptions: {
-      project: './tsconfig.json',
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
     },
-    languageOptions: {
-      ecmaVersion: 2020,
-    },
-  },
-]);
+  }
+);
