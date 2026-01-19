@@ -1,11 +1,18 @@
 {
+  "scripts": {
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "eslint \"frontend/**/*.{ts,tsx}\"",
+    "lint:frontend:fix": "eslint \"frontend/**/*.{ts,tsx}\" --fix",
+    "lint:backend": "eslint \"backend/**/*.ts\"",
+    "lint:backend:fix": "eslint \"backend/**/*.ts\" --fix"
+  },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^8.32.1",
-    "@typescript-eslint/parser": "^8.32.1",
+    "@eslint/js": "^9.27.0",
     "eslint": "^9.27.0",
-    "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.0.0",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1"
   }
 }
