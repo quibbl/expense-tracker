@@ -4,10 +4,15 @@
     "lint:frontend": "eslint \"frontend/**/*.{ts,tsx}\"",
     "lint:frontend:fix": "eslint \"frontend/**/*.{ts,tsx}\" --fix",
     "lint:backend": "eslint \"backend/**/*.ts\"",
-    "lint:backend:fix": "eslint \"backend/**/*.ts\" --fix"
+    "lint:backend:fix": "eslint \"backend/**/*.ts\" --fix",
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "start": "concurrently \"npm --prefix backend run start\" \"npm --prefix frontend run preview\"",
+    "build": "npm --prefix backend run build && npm --prefix frontend run build",
+    "ai:overview": "cat ai/overview.md"
   },
   "devDependencies": {
     "@eslint/js": "^9.27.0",
+    "concurrently": "^9.1.2",
     "eslint": "^9.27.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
