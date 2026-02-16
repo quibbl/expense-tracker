@@ -6,13 +6,12 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "baseUrl": ".",
+    "incremental": true,
+    "noEmit": true,
+    "baseUrl": "./",
     "paths": {
-      "@/components/*": ["src/components/*"],
-      "@/pages/*": ["src/pages/*"],
-      "@/hooks/*": ["src/hooks/*"],
-      "@/utils/*": ["src/utils/*"],
-      "@/assets/*": ["src/assets/*"]
+      "@/*": ["src/*"],
+      "@/assets": ["src/assets/index.ts"]
     }
   },
   "include": ["src"]
