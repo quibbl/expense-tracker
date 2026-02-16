@@ -1,5 +1,14 @@
 {
-    "prettier.configPath": "/Users/hanna.shtyka/expense-tracker/.prettierrc",
+    // Use workspace-local Prettier config instead of an absolute path from another machine
+    "prettier.configPath": ".prettierrc",
     "prettier.useTabs": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false,
+    "files.autoSaveDelay": 0,
+    "eslint.run": "onType",
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ]
 }

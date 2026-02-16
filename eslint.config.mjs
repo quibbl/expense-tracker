@@ -16,6 +16,14 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
+    files: ['**/*.config.*', '**/vite.config.*', '**/eslint.config.mjs'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
     files: ['backend/**/*.ts'],
     languageOptions: {
       parserOptions: {
@@ -28,7 +36,7 @@ export default tseslint.config(
     files: ['frontend/**/*.{ts,tsx}'],
     languageOptions: {
       parserOptions: {
-        project: './frontend/tsconfig.app.json',
+        project: './frontend/tsconfig.json',
         tsconfigRootDir: __dirname,
       },
       globals: {

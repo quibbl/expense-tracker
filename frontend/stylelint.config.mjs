@@ -17,3 +17,4 @@ module.exports = {
   },
   ignoreFiles: ['node_modules/**', 'dist/**'],
 };
+export const ignoreFiles = ['node_modules/**', 'dist/**'];
