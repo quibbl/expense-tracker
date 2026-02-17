@@ -1,3 +1,3 @@
 import LogoIcon from './logo.svg?react';
-
-export { LogoIcon };
+import LoaderIcon from './loader.svg?react';
+export { LogoIcon, LoaderIcon };

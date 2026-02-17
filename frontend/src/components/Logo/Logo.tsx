@@ -6,8 +6,8 @@ type LogoProps = Omit<ComponentPropsWithoutRef<typeof LogoIcon>, 'width' | 'heig
   title?: string;
 };
 
-const Logo = ({ title = 'Expense Tracker', className, ...props }: LogoProps) => {
-  const mergedClassName = className ? `${styles.root} ${className}` : styles.root;
+const Logo = ({ title = '', className, ...props }: LogoProps) => {
+  const mergedClassName = className ? `${styles.logo} ${className}` : styles.logo;
 
   return (
     <LogoIcon

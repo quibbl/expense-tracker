@@ -1,11 +1,11 @@
-import './App.css';
-import Logo from '@/components/Logo/Logo';
+import Header from '@/components/Header/Header';
 
+import './App.css';
 
 function App() {
   return (
     <div>
-      <Logo />
+      <Header />
     </div>
   );
 }
