@@ -1,7 +1,4 @@
-.root {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.logo {
   width: 11rem;
   height: 3.0194rem;
 }
