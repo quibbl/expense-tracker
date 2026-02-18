@@ -2,6 +2,7 @@ import type { ComponentPropsWithoutRef } from 'react';
 import { LoaderIcon } from '@/assets';
 
 import styles from './Loader.module.css';
+import Icon from '../Icon';
 
 type LoaderProps = Omit<
   ComponentPropsWithoutRef<typeof LoaderIcon>,
@@ -9,20 +10,13 @@ type LoaderProps = Omit<
 > & {
   title?: string;
 };
-const Loader = ({ title = '', className, ...props }: LoaderProps) => {
+const Loader = ({ title = '', className }: LoaderProps) => {
   const mergedClassName = className
     ? `${styles.loader} ${className}`
     : styles.loader;
 
   return (
-    <LoaderIcon
-      className={mergedClassName}
-      title={title}
-      role="img"
-      aria-label={title}
-      focusable="false"
-      {...props}
-    />
+    <Icon iconName="loader" className={mergedClassName} ariaLabel={title} />
   );
 };
 
