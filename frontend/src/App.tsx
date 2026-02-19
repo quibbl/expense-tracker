@@ -1,13 +1,12 @@
-import Header from '@/components/Header/Header';
-import './App.css';
-import DatePicker from './components/DatePicker';
+import { BrowserRouter } from 'react-router-dom';
+
+import { AppRoutes } from '@/routes';
 
 function App() {
   return (
-    <div>
-      <Header />
-      <DatePicker />
-    </div>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
 
