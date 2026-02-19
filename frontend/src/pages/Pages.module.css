@@ -1,0 +1,22 @@
+.page {
+  margin: 0 auto;
+  max-width: 64rem;
+  padding: 2rem 1rem;
+}
+
+.navigation {
+  margin-top: 1rem;
+}
+
+.link {
+  border: 1px solid #d0d6e2;
+  border-radius: 0.5rem;
+  color: #1f2937;
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+}
+
+.link:hover {
+  background: #f3f4f6;
+}
