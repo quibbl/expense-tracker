@@ -12,6 +12,7 @@ const SignInPage = () => {
     <AuthLayout>
       <LoginForm
         title="Welcome Back"
+        subtitle='Hello there, sign in to continue'
         iconName="signIn"
         submitLabel="Sign In"
         fields={[

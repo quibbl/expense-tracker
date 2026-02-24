@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 import Icon from '@/components/Icon';
 import Input, { type InputProps } from '@/components/Input';
@@ -13,13 +13,26 @@ export type LoginFormField = Omit<InputProps, 'id' | 'name' | 'className'> & {
   id?: string;
   containerClassName?: string;
   inputClassName?: string;
+  errorMessage?: string;
   labelProps?: Omit<InputLabelProps, 'children' | 'htmlFor'>;
+  renderInput?: (params: {
+    id: string;
+    name: string;
+    className: string;
+  }) => ReactNode;
+};
+
+type LoginFormStatusMessage = {
+  type: 'error' | 'success';
+  text: string;
 };
 
 export type LoginFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'title'> & {
   title: string;
+  subtitle: string;
   fields: LoginFormField[];
   submitLabel: string;
+  statusMessage?: LoginFormStatusMessage;
   iconName?: IconName;
   iconAriaLabel?: string;
   submitButtonProps?: Omit<
@@ -30,8 +43,10 @@ export type LoginFormProps = Omit<ComponentPropsWithoutRef<'form'>, 'title'> & {
 
 const LoginForm = ({
   title,
+  subtitle,
   fields,
   submitLabel,
+  statusMessage,
   iconName,
   iconAriaLabel,
   className,
@@ -47,7 +62,7 @@ const LoginForm = ({
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>{title}</h1>
-          <span className={styles.subtitle}>Hello there, sign in to continue</span>
+          <span className={styles.subtitle}>{subtitle}</span>
         </div>
         <div className={styles.iconSection}>
           {iconName ? (
@@ -68,7 +83,9 @@ const LoginForm = ({
             label,
             containerClassName,
             inputClassName,
+            errorMessage,
             labelProps,
+            renderInput,
             ...inputProps
           } = field;
           const fieldId = id ?? name;
@@ -84,16 +101,39 @@ const LoginForm = ({
               <InputLabel htmlFor={fieldId} {...labelProps}>
                 {label}
               </InputLabel>
-              <Input
-                id={fieldId}
-                name={name}
-                className={mergedInputClassName}
-                {...inputProps}
-              />
+              {renderInput ? (
+                renderInput({
+                  id: fieldId,
+                  name,
+                  className: mergedInputClassName,
+                })
+              ) : (
+                <Input
+                  id={fieldId}
+                  name={name}
+                  className={mergedInputClassName}
+                  {...inputProps}
+                />
+              )}
+              {errorMessage ? (
+                <p className={styles.fieldError}>{errorMessage}</p>
+              ) : null}
             </div>
           );
         })}
       </div>
+
+      {statusMessage ? (
+        <p
+          className={
+            statusMessage.type === 'error'
+              ? `${styles.statusMessage} ${styles.statusError}`
+              : `${styles.statusMessage} ${styles.statusSuccess}`
+          }
+        >
+          {statusMessage.text}
+        </p>
+      ) : null}
 
       <button
         className={styles.submitButton}
