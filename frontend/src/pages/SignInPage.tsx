@@ -1,17 +1,38 @@
-import AuthPagePlaceholder from '@/components/AuthPagePlaceholder';
-import { ROUTE_PATHS } from '@/routes/routePaths';
+import type { FormEventHandler } from 'react';
+
+import LoginForm from '@/components/LoginForm';
+import AuthLayout from '@/layouts/AuthLayout/AuthLayout';
 
 const SignInPage = () => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+  };
+
   return (
-    <AuthPagePlaceholder
-      title="Sign In"
-      description="Sign in form placeholder."
-      links={[
-        { to: ROUTE_PATHS.signUp, label: 'Create account' },
-        { to: ROUTE_PATHS.forgotPassword, label: 'Forgot password' },
-        { to: ROUTE_PATHS.root, label: 'Back to expenses' },
-      ]}
-    />
+    <AuthLayout>
+      <LoginForm
+        title="Welcome Back"
+        iconName="signIn"
+        submitLabel="Sign In"
+        fields={[
+          {
+            name: 'email',
+            type: 'email',
+            placeholder: 'Email',
+            required: true,
+            autoComplete: 'email',
+          },
+          {
+            name: 'password',
+            type: 'password',
+            placeholder: 'Password',
+            required: true,
+            autoComplete: 'current-password',
+          },
+        ]}
+        onSubmit={handleSubmit}
+      />
+    </AuthLayout>
   );
 };
 

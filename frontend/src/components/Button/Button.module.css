@@ -1,5 +1,11 @@
 .primary {
   border: none;
-  background: none;
+  width: 16.688rem;
+  height: 2.75rem;
+  border-radius: 0.938rem;
+  background-color: #3629B7;
   cursor: pointer;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
 }
