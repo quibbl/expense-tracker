@@ -4,6 +4,7 @@ import PrimaryButtonIcon from './primary-button.svg?react';
 import LoginLogoIcon from './login-logo.svg?react';
 import LoginPictureIcon from './login-picture.svg?react';
 import SignInIcon from './sign-in.svg?react';
+import SignUpIcon from './sign-up.svg?react';
 
 export const iconComponents = {
   logo: LogoIcon,
@@ -12,6 +13,7 @@ export const iconComponents = {
   loginLogo: LoginLogoIcon,
   loginPicture: LoginPictureIcon,
   signIn: SignInIcon,
+  signUp: SignUpIcon,
 } as const;
 
 export type IconName = keyof typeof iconComponents;
@@ -21,5 +23,6 @@ export {
   PrimaryButtonIcon,
   LoginLogoIcon,
   LoginPictureIcon,
-  SignInIcon
+  SignInIcon,
+  SignUpIcon
 };
