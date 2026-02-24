@@ -1,0 +1,26 @@
+.layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100vh;
+  padding: 3rem;
+  background-color: #3629B7;
+}
+
+.logoSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  /* width: 22rem;
+  height: 8rem; */
+  /* margin-bottom: 2rem; */
+}
+
+.formSection {
+  width: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}

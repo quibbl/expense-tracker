@@ -1,16 +1,22 @@
-import { PrimaryButtonIcon } from '@/assets';
 import styles from './Button.module.css';
 
-const Button = () => {
+export type ButtonProps = {
+  label: string;
+  onClick: () => void;
+};
+
+const Button = ({ label, onClick }: ButtonProps) => {
   return (
     <button
-      type="button"
-      name='primary-button'
+      type="submit"
+      name='primary'
       className={styles.primary}
+      onClick={onClick}
     >
-      <PrimaryButtonIcon />
+      {label}
     </button>
   );
 };
 
 export default Button;
+
