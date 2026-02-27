@@ -23,11 +23,27 @@ model Expense {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique
-  name     String
-  password String
-  expenses Expense[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String
+  password      String
+  refreshTokens RefreshToken[]
+  expenses      Expense[]
 
   @@map("users")
+}
+
+model RefreshToken {
+  id          Int      @id @default(autoincrement())
+  hashedToken String   @unique
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  expireAt    DateTime
+
+  @@index([userId])
+  @@index([expireAt])
+  @@map("refresh_tokens")
 }

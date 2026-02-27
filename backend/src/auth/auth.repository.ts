@@ -12,3 +12,13 @@ export const findAuthUserByEmail = (email: string) => {
     where: { email },
   });
 };
+
+export const createRefreshToken = (data: {
+  hashedToken: string;
+  userId: number;
+  expireAt: Date;
+}) => {
+  return prisma.refreshToken.create({
+    data,
+  });
+};
