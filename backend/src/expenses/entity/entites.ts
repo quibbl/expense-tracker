@@ -6,5 +6,6 @@ export class Expense {
     public currency: string,
     public category: string,
     public date: Date,
+    public userId: number | null,
   ) {}
 }

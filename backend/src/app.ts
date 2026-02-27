@@ -1,14 +1,12 @@
 import express from 'express';
+import authController from './auth/auth.controller';
 import expensesController from './expenses/expenses.controller';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/', expensesController);
-
+app.use('/api/auth', authController);
+app.use('/api/expenses', expensesController);
 
 export default app;

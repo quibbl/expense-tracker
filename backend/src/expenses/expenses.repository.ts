@@ -1,27 +1,33 @@
-import { PrismaClient } from '@prisma/client';
 import { CreateExpenseDto } from './dto/create-expense.dto';
+import { prisma } from '../db/prisma.service';
 
-const prisma = new PrismaClient();
+export interface ExpenseRecord {
+  id: number;
+  name: string;
+  amount: number;
+  currency: string;
+  category: string;
+  date: Date;
+  userId: number | null;
+}
 
-
-export const createExpense = async (data: CreateExpenseDto) => {
-  try {
-    const newExpense = await prisma.expense.create({
-      data,
-    });
-    return newExpense;
-  } catch (error) {
-    console.error('Error inserting expense:', error);
-    throw error;
-  }
+export const createExpense = async (
+  data: CreateExpenseDto,
+): Promise<ExpenseRecord> => {
+  return prisma.expense.create({
+    data: {
+      name: data.name,
+      amount: data.amount,
+      currency: data.currency,
+      category: data.category,
+      date: data.date,
+      ...(data.userId != null ? { user: { connect: { id: data.userId } } } : {}),
+    },
+  });
 };
 
-export const selectAllExpenses = async () => {
-  try {
-    const expenses = await prisma.expense.findMany();
-    return expenses;
-  } catch (error) {
-    console.error('Error fetching expenses:', error);
-    throw error;
-  }
+export const selectAllExpenses = async (): Promise<ExpenseRecord[]> => {
+  return prisma.expense.findMany({
+    orderBy: [{ date: 'desc' }, { id: 'desc' }],
+  });
 };

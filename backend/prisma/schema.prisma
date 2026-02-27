@@ -8,12 +8,26 @@ generator client {
 }
 
 model Expense {
-  id        Int      @id @default(autoincrement())
-  name      String
-  amount    Float
-  currency  String
-  category  String
-  date      DateTime
-  createdAt DateTime
-  updatedAt DateTime
+  id       Int      @id @default(autoincrement())
+  name     String
+  amount   Float
+  currency String
+  category String
+  date     DateTime
+  userId   Int?
+  user     User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+
+  @@map("expenses")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  name     String
+  password String
+  expenses Expense[]
+
+  @@map("users")
 }
