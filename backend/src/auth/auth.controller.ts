@@ -1,16 +1,23 @@
 import { Request, Response, Router } from 'express';
 import { signIn, signUp } from './auth.service';
+import { validateSignInInput, validateSignUpInput } from '../helpers/middlewares/validator';
+import { AuthSignInDto, AuthSignUpDto } from './dto/auth.dto';
 
 const router = Router();
 
 router.post('/sign-up', async (req: Request, res: Response) => {
   try {
-    if (!req.body?.email || !req.body?.name || !req.body?.password) {
-      res.status(400).json({ message: 'email, name and password are required' });
+    const validationResult = validateSignUpInput(req.body);
+
+    if (!validationResult.valid) {
+      res.status(400).json({
+        message: 'Validation failed',
+        errors: validationResult.errors,
+      });
       return;
     }
 
-    const user = await signUp(req.body);
+    const user = await signUp(req.body as AuthSignUpDto);
 
     res.status(201).json(user);
   } catch (error) {
@@ -26,12 +33,18 @@ router.post('/sign-up', async (req: Request, res: Response) => {
 
 router.post('/sign-in', async (req: Request, res: Response) => {
   try {
-    if (!req.body?.email || !req.body?.password) {
-      res.status(400).json({ message: 'email and password are required' });
+    const validationResult = validateSignInInput(req.body);
+
+    if (!validationResult.valid) {
+      res.status(400).json({
+        message: 'Validation failed',
+        errors: validationResult.errors,
+      });
       return;
     }
 
-    const user = await signIn(req.body.email, req.body.password);
+    const payload = req.body as AuthSignInDto;
+    const user = await signIn(payload.email, payload.password);
 
     res.status(200).json(user);
   } catch (error) {
