@@ -27,8 +27,8 @@ export const validateCreateExpense = (
     },
     {
       key: 'currency',
-      validate: (v) => typeof v === 'number',
-      errorMessage: 'Amount should be a number',
+      validate: (v) => typeof v === 'string',
+      errorMessage: 'Currency is required',
     },
     {
       key: 'category',
@@ -37,7 +37,7 @@ export const validateCreateExpense = (
     },
     {
       key: 'date',
-      validate: (v) => typeof v === 'string',
+      validate: (v) => v instanceof Date && !Number.isNaN(v.getTime()),
       errorMessage: 'Date is required',
     },
   ];

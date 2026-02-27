@@ -3,7 +3,6 @@ export interface CreateExpenseDto {
   amount: number;
   currency: string;
   category: string;
-  date: string;
-  createdAt: Date;
-  updatedAt: Date;
+  date: Date;
+  userId?: number;
 }
