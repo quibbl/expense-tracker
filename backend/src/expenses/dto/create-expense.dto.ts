@@ -4,5 +4,5 @@ export interface CreateExpenseDto {
   currency: string;
   category: string;
   date: Date;
-  userId?: number;
+  userId: number;
 }

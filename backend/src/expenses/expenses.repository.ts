@@ -21,13 +21,14 @@ export const createExpense = async (
       currency: data.currency,
       category: data.category,
       date: data.date,
-      ...(data.userId != null ? { user: { connect: { id: data.userId } } } : {}),
+      user: { connect: { id: data.userId } },
     },
   });
 };
 
-export const selectAllExpenses = async (): Promise<ExpenseRecord[]> => {
+export const selectAllExpenses = async (userId: number): Promise<ExpenseRecord[]> => {
   return prisma.expense.findMany({
+    where: { userId },
     orderBy: [{ date: 'desc' }, { id: 'desc' }],
   });
 };
