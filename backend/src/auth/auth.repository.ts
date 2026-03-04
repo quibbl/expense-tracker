@@ -22,3 +22,27 @@ export const createRefreshToken = (data: {
     data,
   });
 };
+
+export const findValidRefreshTokenByHash = (hashedToken: string) => {
+  return prisma.refreshToken.findFirst({
+    where: {
+      hashedToken,
+      revoked: false,
+      expireAt: {
+        gt: new Date(),
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+};
+
+export const revokeRefreshTokenById = (id: number) => {
+  return prisma.refreshToken.update({
+    where: { id },
+    data: {
+      revoked: true,
+    },
+  });
+};
