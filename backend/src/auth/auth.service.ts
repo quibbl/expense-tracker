@@ -1,6 +1,12 @@
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { createAuthUser, createRefreshToken, findAuthUserByEmail } from './auth.repository';
+import {
+  createAuthUser,
+  createRefreshToken,
+  findAuthUserByEmail,
+  findValidRefreshTokenByHash,
+  revokeRefreshTokenById,
+} from './auth.repository';
 import { AuthTokensDto, AuthUserDataDto } from './dto/auth.dto';
 import {
   JWT_ACCESS_EXPIRES_IN,
@@ -56,6 +62,11 @@ const verifyPassword = (password: string, storedHash: string): boolean => {
 const hashRefreshToken = (refreshToken: string): string => {
   return crypto.createHash('sha256').update(refreshToken).digest('hex');
 };
+
+interface RefreshTokenPayload {
+  sub?: string | number;
+  type?: string;
+}
 
 const createTokens = async (user: { id: number; email: string; name: string }): Promise<AuthTokensDto> => {
   const accessToken = jwt.sign(
@@ -136,4 +147,45 @@ export const signIn = async (email: string, password: string) => {
     name: user.name,
     tokens,
   };
+};
+
+export const refreshTokens = async (refreshToken: string): Promise<AuthTokensDto> => {
+  const tokenPreview = hashRefreshToken(refreshToken).slice(0, 8);
+  console.info('[auth] token refresh attempt', { tokenPreview });
+
+  let payload: RefreshTokenPayload;
+
+  try {
+    payload = jwt.verify(refreshToken, JWT_REFRESH_SECRET) as RefreshTokenPayload;
+  } catch (error) {
+    const reason = error instanceof jwt.TokenExpiredError ? 'expired_refresh_token' : 'invalid_refresh_token';
+    console.warn('[auth] token refresh failed', { reason, tokenPreview });
+    throw new Error('Invalid refresh token');
+  }
+
+  if (payload.type !== 'refresh') {
+    console.warn('[auth] token refresh failed', { reason: 'invalid_refresh_token_type', tokenPreview });
+    throw new Error('Invalid refresh token');
+  }
+
+  const userId = Number(payload.sub);
+
+  if (!Number.isInteger(userId) || userId <= 0) {
+    console.warn('[auth] token refresh failed', { reason: 'invalid_refresh_token_subject', tokenPreview });
+    throw new Error('Invalid refresh token');
+  }
+
+  const storedToken = await findValidRefreshTokenByHash(hashRefreshToken(refreshToken));
+
+  if (!storedToken || storedToken.userId !== userId) {
+    console.warn('[auth] token refresh failed', { reason: 'refresh_token_not_found', tokenPreview, userId });
+    throw new Error('Invalid refresh token');
+  }
+
+  await revokeRefreshTokenById(storedToken.id);
+
+  const tokens = await createTokens(storedToken.user);
+  console.info('[auth] token refresh success', { userId: storedToken.user.id, tokenPreview });
+
+  return tokens;
 };

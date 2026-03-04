@@ -9,6 +9,10 @@ export interface AuthSignInDto {
   password: string;
 }
 
+export interface AuthRefreshTokenDto {
+  refreshToken: string;
+}
+
 export interface AuthUserDataDto {
   email: string;
   name: string;

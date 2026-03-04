@@ -1,9 +1,9 @@
 import { CreateExpenseDto } from '../../expenses/dto/create-expense.dto';
-import { AuthSignInDto, AuthSignUpDto } from '../../auth/dto/auth.dto';
+import { AuthRefreshTokenDto, AuthSignInDto, AuthSignUpDto } from '../../auth/dto/auth.dto';
 
 type ValidationRule<T> = {
   key: keyof T;
-  validate: (value: any) => boolean;
+  validate: (value: unknown) => boolean;
   errorMessage: string;
 };
 
@@ -133,6 +133,35 @@ export const validateSignInInput = (data: unknown): ValidationResult<AuthSignInD
   ];
 
   const errors: Partial<Record<keyof AuthSignInDto, string>> = {};
+
+  for (const rule of rules) {
+    const value = payload[rule.key];
+
+    if (!rule.validate(value)) {
+      errors[rule.key] = rule.errorMessage;
+    }
+  }
+
+  return {
+    valid: Object.keys(errors).length === 0,
+    errors,
+  };
+};
+
+export const validateRefreshTokenInput = (
+  data: unknown,
+): ValidationResult<AuthRefreshTokenDto> => {
+  const payload = (data as Partial<AuthRefreshTokenDto>) ?? {};
+
+  const rules: ValidationRule<AuthRefreshTokenDto>[] = [
+    {
+      key: 'refreshToken',
+      validate: validateNonEmptyString,
+      errorMessage: 'Refresh token is required',
+    },
+  ];
+
+  const errors: Partial<Record<keyof AuthRefreshTokenDto, string>> = {};
 
   for (const rule of rules) {
     const value = payload[rule.key];

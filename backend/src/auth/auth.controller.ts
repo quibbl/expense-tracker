@@ -1,7 +1,11 @@
 import { Request, Response, Router } from 'express';
-import { signIn, signUp } from './auth.service';
-import { validateSignInInput, validateSignUpInput } from '../helpers/middlewares/validator';
-import { AuthSignInDto, AuthSignUpDto } from './dto/auth.dto';
+import { refreshTokens, signIn, signUp } from './auth.service';
+import {
+  validateRefreshTokenInput,
+  validateSignInInput,
+  validateSignUpInput,
+} from '../helpers/middlewares/validator';
+import { AuthRefreshTokenDto, AuthSignInDto, AuthSignUpDto } from './dto/auth.dto';
 
 const router = Router();
 
@@ -55,6 +59,33 @@ router.post('/sign-in', async (req: Request, res: Response) => {
 
     console.error('Failed to sign in:', error);
     res.status(500).json({ message: 'Failed to sign in' });
+  }
+});
+
+router.post('/token', async (req: Request, res: Response) => {
+  try {
+    const validationResult = validateRefreshTokenInput(req.body);
+
+    if (!validationResult.valid) {
+      res.status(400).json({
+        message: 'Validation failed',
+        errors: validationResult.errors,
+      });
+      return;
+    }
+
+    const payload = req.body as AuthRefreshTokenDto;
+    const tokens = await refreshTokens(payload.refreshToken);
+
+    res.status(200).json(tokens);
+  } catch (error) {
+    if (error instanceof Error && error.message === 'Invalid refresh token') {
+      res.status(401).json({ message: error.message });
+      return;
+    }
+
+    console.error('Failed to refresh token:', error);
+    res.status(500).json({ message: 'Failed to refresh token' });
   }
 });
 
