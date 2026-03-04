@@ -11,6 +11,6 @@ export const addExpense = async (
   return createExpense(expense);
 };
 
-export const getExpenses = async (): Promise<ExpenseRecord[]> => {
-  return selectAllExpenses();
+export const getExpenses = async (userId: number): Promise<ExpenseRecord[]> => {
+  return selectAllExpenses(userId);
 };

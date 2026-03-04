@@ -6,6 +6,12 @@ const router = Router();
 
 router.post('/', async (req: Request, res: Response): Promise<void> => {
   try {
+    const userId = req.authUser?.id;
+    if (!userId) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
+
     const payload = req.body as Partial<CreateExpenseDto>;
 
     if (
@@ -37,6 +43,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
       currency: payload.currency,
       category: payload.category,
       date: parsedDate,
+      userId,
     });
 
     res.status(201).json(expense);
@@ -46,9 +53,15 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-router.get('/', async (_req: Request, res: Response): Promise<void> => {
+router.get('/', async (req: Request, res: Response): Promise<void> => {
   try {
-    const expenses = await getExpenses();
+    const userId = req.authUser?.id;
+    if (!userId) {
+      res.status(401).json({ message: 'Unauthorized' });
+      return;
+    }
+
+    const expenses = await getExpenses(userId);
 
     res.status(200).json(expenses);
   } catch (error) {
